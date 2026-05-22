@@ -8,9 +8,9 @@ import Notes from "./pages/Notes.jsx";
 import History from "./pages/NotesHistory.jsx";
 import Pricing from "./pages/Pricing.jsx";
 import NotesPage from "./pages/NotesPage.jsx";
-import Interview from "./pages/Interview.jsx";
-import InterviewPage from "./pages/InterviewPage.jsx";
-import InterviewHistory from "./pages/InterviewHistory.jsx";
+import Interview from "./pages/interview.jsx";
+import InterviewPage from "./pages/interviewPage.jsx";
+import InterviewHistory from "./pages/interviewHistory.jsx";
 import InterviewReport from "./pages/InterviewReport.jsx";
 
 export const serverUrl = "https://sukunotesai.onrender.com";
