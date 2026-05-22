@@ -1,0 +1,26 @@
+
+@import "tailwindcss";
+
+@plugin "tailwind-scrollbar";
+
+/* Smooth, clean scrollbar */
+.scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(16, 185, 129, 0.55) transparent;
+}
+.scroll-area::-webkit-scrollbar {
+  width: 10px;
+}
+.scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scroll-area::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.55);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.scroll-area::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.8);
+  background-clip: content-box;
+}
