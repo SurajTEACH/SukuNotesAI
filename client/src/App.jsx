@@ -6,7 +6,7 @@ import { getCurrentUser } from "./services/api.js";
 import { useDispatch, useSelector } from "react-redux";
 import Notes from "./pages/Notes.jsx";
 import History from "./pages/NotesHistory.jsx";
-import Pricing from "./pages/pricing.jsx";
+import Pricing from "./pages/Pricing.jsx";
 import NotesPage from "./pages/NotesPage.jsx";
 import Interview from "./pages/interview.jsx";
 import InterviewPage from "./pages/interviewPage.jsx";
