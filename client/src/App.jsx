@@ -13,7 +13,7 @@ import InterviewPage from "./pages/interviewPage.jsx";
 import InterviewHistory from "./pages/interviewHistory.jsx";
 import InterviewReport from "./pages/InterviewReport.jsx";
 
-export const serverUrl = "http://localhost:8000";
+export const serverUrl = "https://sukunotesai.onrender.com";
 
 function App() {
   const dispatch = useDispatch();
