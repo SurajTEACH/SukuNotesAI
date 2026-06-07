@@ -8,7 +8,7 @@ import store from './redux/store.js'
 
 import axios from 'axios'
 
-// Configure Axios interceptor for JWT authorization header
+// Configure Axios interceptor for JWT authorization header — v2
 axios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
