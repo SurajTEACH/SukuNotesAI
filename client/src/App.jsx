@@ -9,8 +9,8 @@ import History from "./pages/NotesHistory.jsx";
 import Pricing from "./pages/Pricing.jsx";
 import NotesPage from "./pages/NotesPage.jsx";
 import Interview from "./pages/interview.jsx";
-import InterviewPage from "./pages/interviewPage.jsx";
-import InterviewHistory from "./pages/interviewHistory.jsx";
+import InterviewPage from "./pages/InterviewPage.jsx";
+import InterviewHistory from "./pages/InterviewHistory.jsx";
 import InterviewReport from "./pages/InterviewReport.jsx";
 
 export const serverUrl =
@@ -44,24 +44,24 @@ function App() {
           element={userData ? <Notes /> : <Navigate to="/auth" replace />}
         />
 
-        
+
         <Route
           path="/history"
-          element={userData ? <History />: <Navigate to="/auth" replace />}
+          element={userData ? <History /> : <Navigate to="/auth" replace />}
         />
-        
-        
+
+
         <Route
           path="/pricing"
           element={userData ? <Pricing /> : <Navigate to="/auth" replace />}
         />
-        
-        
+
+
         <Route
           path="/notes-page"
           element={userData ? <NotesPage /> : <Navigate to="/auth" replace />}
         />
-        
+
         <Route
           path="/mock-interview"
           element={userData ? <Interview /> : <Navigate to="/auth" replace />}
@@ -71,12 +71,12 @@ function App() {
           path="/interview-page"
           element={userData ? <InterviewPage /> : <Navigate to="/auth" replace />}
         />
-        
-         <Route
+
+        <Route
           path="/interview-history"
           element={userData ? <InterviewHistory /> : <Navigate to="/auth" replace />}
         />
-        
+
         <Route
           path="/interview-report/:id"
           element={userData ? <InterviewReport /> : <Navigate to="/auth" replace />}
