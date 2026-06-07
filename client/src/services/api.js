@@ -22,6 +22,7 @@ export const logoutUser = async () => {
   } catch (error) {
     console.log(error);
   }
+  localStorage.removeItem("token");
 };
 
 

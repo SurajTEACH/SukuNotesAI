@@ -210,12 +210,13 @@ function ProfilePopover({ open, onClose }) {
       await axios.get(`${serverUrl}/api/auth/logout`, {
         withCredentials: true,
       });
-      dispatch(setUserData(null))
-      navigate("/auth");
     } catch (err) {
       console.log(err);
     }
+    localStorage.removeItem("token");
+    dispatch(setUserData(null));
     dispatch(logout());
+    navigate("/auth");
     onClose();
   };
 

@@ -6,14 +6,17 @@ import { getCurrentUser } from "./services/api.js";
 import { useDispatch, useSelector } from "react-redux";
 import Notes from "./pages/Notes.jsx";
 import History from "./pages/NotesHistory.jsx";
-import Pricing from "./pages/pricing.jsx";
+import Pricing from "./pages/Pricing.jsx";
 import NotesPage from "./pages/NotesPage.jsx";
 import Interview from "./pages/interview.jsx";
 import InterviewPage from "./pages/interviewPage.jsx";
 import InterviewHistory from "./pages/interviewHistory.jsx";
 import InterviewReport from "./pages/InterviewReport.jsx";
 
-export const serverUrl = "http://localhost:8000";
+export const serverUrl =
+  window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? "http://localhost:8000"
+    : "https://sukunotesai.onrender.com";
 
 function App() {
   const dispatch = useDispatch();

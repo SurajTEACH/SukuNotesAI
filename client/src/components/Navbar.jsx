@@ -135,6 +135,7 @@ function ProfilePopover({ open, onClose }) {
     try {
       await axios.get(`${serverUrl}/api/auth/logout`, { withCredentials: true });
     } catch (err) { console.log(err); }
+    localStorage.removeItem("token");
     dispatch(setUserData(null));
     navigate("/auth");
     onClose();
