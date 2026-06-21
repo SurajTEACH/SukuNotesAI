@@ -58,7 +58,16 @@ export const analyzeResume = async (req, res) =>{
 
     const aiResponse = await askAi(messages);
 
-    const parsed = JSON.parse(aiResponse);
+    let cleanResponse = aiResponse.trim();
+    if (cleanResponse.startsWith("```")) {
+        cleanResponse = cleanResponse.replace(/^```(?:json)?\n?/i, "");
+    }
+    if (cleanResponse.endsWith("```")) {
+        cleanResponse = cleanResponse.slice(0, -3);
+    }
+    cleanResponse = cleanResponse.trim();
+
+    const parsed = JSON.parse(cleanResponse);
     
     fs.unlinkSync(filepath);
 
@@ -306,7 +315,17 @@ export const submitAnswer = async (req, res) => {
     ];
 
     const aiResponse = await askAi(messages);
-    const parsed = JSON.parse(aiResponse);
+    
+    let cleanResponse = aiResponse.trim();
+    if (cleanResponse.startsWith("```")) {
+        cleanResponse = cleanResponse.replace(/^```(?:json)?\n?/i, "");
+    }
+    if (cleanResponse.endsWith("```")) {
+        cleanResponse = cleanResponse.slice(0, -3);
+    }
+    cleanResponse = cleanResponse.trim();
+
+    const parsed = JSON.parse(cleanResponse);
 
     question.answer = answer;
     question.confidence = parsed.confidence;;
