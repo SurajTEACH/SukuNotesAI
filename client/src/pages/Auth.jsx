@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion as Motion } from "motion/react";
 import { FcGoogle } from "react-icons/fc";
 import {  Sparkles} from "lucide-react";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithRedirect, getRedirectResult } from "firebase/auth";
 import { auth, provider } from "../utils/firebase.js";
 import axios from "axios";
 import { serverUrl } from "../App.jsx";
@@ -13,30 +13,51 @@ import { useNavigate } from "react-router-dom";
 function Auth() {
 
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  // Redirect se wapas aane par result handle karo
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        const response = await getRedirectResult(auth);
+        if (response) {
+          setLoading(true);
+          const User = response.user;
+          const name = User.displayName;
+          const email = User.email;
+
+          const result = await axios.post(
+            serverUrl + "/api/auth/google",
+            { name, email },
+            { withCredentials: true },
+          );
+
+          if (result.data?.token) {
+            localStorage.setItem("token", result.data.token);
+          }
+
+          dispatch(setUserData(result.data));
+          navigate("/");
+        }
+      } catch (error) {
+        console.log("Redirect result error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    handleRedirectResult();
+  }, []);
 
   const handleGoogleAuth = async () => {
     try {
-      const response = await signInWithPopup(auth, provider);
-      const User = response.user;
-      const name = User.displayName;
-      const email = User.email;
-
-      const result = await axios.post(
-        serverUrl + "/api/auth/google",
-        { name, email },
-        { withCredentials: true },
-      );
-      
-      if (result.data?.token) {
-        localStorage.setItem("token", result.data.token);
-      }
-      
-      dispatch(setUserData(result.data));
-      navigate("/");
+      setLoading(true);
+      await signInWithRedirect(auth, provider);
+      // Page redirect hoga, baad mein useEffect handle karega
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -106,7 +127,7 @@ function Auth() {
 
           {/* Google Sign In Button */}
           <Motion.button
-            whileHover={{
+            whileHover={loading ? {} : {
               y: -10,
               rotateX: 8,
               rotateY: 8,
@@ -114,12 +135,25 @@ function Auth() {
             }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 200, damping: 18 }}
-            className="w-full sm:w-auto mt-10 px-10 py-3 rounded-xl flex items-center justify-center gap-3 bg-gradient-to-br from-black/90 via-black/80 to-black/90 border border-white/10 text-white font-semibold text-lg shadow-[0_25px_60px_rgba(0,0,0,0.7)] mb-6 cursor-pointer"
+            className="w-full sm:w-auto mt-10 px-10 py-3 rounded-xl flex items-center justify-center gap-3 bg-gradient-to-br from-black/90 via-black/80 to-black/90 border border-white/10 text-white font-semibold text-lg shadow-[0_25px_60px_rgba(0,0,0,0.7)] mb-6 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             style={{ transformStyle: "preserve-3d" }}
             onClick={handleGoogleAuth}
+            disabled={loading}
           >
-            <FcGoogle size={22} />
-            Continue with Google
+            {loading ? (
+              <>
+                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                </svg>
+                Redirecting...
+              </>
+            ) : (
+              <>
+                <FcGoogle size={22} />
+                Continue with Google
+              </>
+            )}
           </Motion.button>
 
           {/* Features List */}
