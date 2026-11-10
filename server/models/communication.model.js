@@ -45,6 +45,17 @@ const communicationSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    verdict: {
+      type: String,
+      default: "",
+    },
+    mistakes: [
+      {
+        original: String,
+        correction: String,
+        reason: String,
+      },
+    ],
     strengths: [String],
     improvements: [String],
     detailedFeedback: {

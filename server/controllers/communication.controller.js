@@ -4,39 +4,39 @@ import { askAi } from "../services/openRouter.services.js";
 
 const DEFAULT_TOPICS = [
   {
+    id: "intro-1",
+    category: "Self Introduction",
+    title: "Tell Me About Yourself (Professional Self-Introduction)",
+    prompt: "Deliver a 60-second professional self-introduction covering your name/background, top skills/projects, and what you aim to achieve.",
+    tips: "Start with 'My name is...' or 'I am...', never 'Myself...'. Highlight 1-2 major projects, and conclude with your career goal.",
+  },
+  {
     id: "pitch-1",
-    category: "Elevator Pitch",
-    title: "Introduce Yourself Professionally",
-    prompt: "Give a 60-second introduction highlighting your background, key technical strengths, and what drives you.",
-    tips: "Keep it under 3-4 sentences. Focus on value proposition rather than your full resume.",
+    category: "College & Projects",
+    title: "Explain Your Best Project or Achievement",
+    prompt: "Explain your best academic or technical project: what problem it solves, the technologies used, and your personal contribution.",
+    tips: "Explain the 'Why' behind the project first, then mention the tech stack and the measurable impact.",
   },
   {
     id: "behavioral-1",
-    category: "Behavioral & Leadership",
-    title: "Handling a Disagreement with a Teammate",
-    prompt: "Describe how you would professionally handle a situation where you strongly disagree with a senior colleague's technical decision.",
-    tips: "Use the STAR method (Situation, Task, Action, Result). Focus on empathy and data-driven discussion.",
+    category: "Behavioral & HR",
+    title: "Why Should We Hire You?",
+    prompt: "Explain why you are the ideal fit for your target role and what sets you apart from other candidates.",
+    tips: "Align your strengths with the company's needs. Show passion and willingness to learn.",
   },
   {
     id: "technical-1",
     category: "Technical Explanation",
-    title: "Explain APIs to a 10-Year-Old",
-    prompt: "Explain what an Application Programming Interface (API) is to someone who has never touched computer science.",
-    tips: "Use vivid real-world analogies like a restaurant waiter or power socket.",
-  },
-  {
-    id: "negotiation-1",
-    category: "Business Negotiation",
-    title: "Requesting a Project Deadline Extension",
-    prompt: "How would you tell a project manager or client that unexpected blockers require extending the delivery timeline by one week?",
-    tips: "Take accountability, state the blockers objectively, and offer proactive mitigation options.",
+    title: "Explain APIs or Cloud to a Non-Tech Person",
+    prompt: "Explain how APIs or Cloud Computing work to someone with zero technical background.",
+    tips: "Use real-life analogies like a restaurant waiter or electricity grid.",
   },
   {
     id: "conflict-1",
-    category: "Client & Presentation",
-    title: "Pitching an AI Feature to Stakeholders",
-    prompt: "Pitch why adopting SukuNotesAI in your university or company will save 20+ hours per student every exam season.",
-    tips: "Focus on ROI, student outcomes, and time saved.",
+    category: "Teamwork & Conflict",
+    title: "Handling a Disagreement with a Teammate",
+    prompt: "How would you handle a technical disagreement with a team member respectfully and effectively?",
+    tips: "Focus on listening first, comparing pros/cons using data, and prioritizing team goals.",
   },
 ];
 
@@ -75,21 +75,31 @@ export const evaluateSpeech = async (req, res) => {
         content: `You are an elite executive communications coach and speech evaluator.
 Analyze the user's spoken transcript or written response for the given topic and context.
 
-Evaluate on:
-1. Grammar & Syntax: Accuracy, tenses, sentence structure.
-2. Vocabulary & Range: Professional business diction, conciseness.
-3. Fluency & Tone: Confidence, persuasion, clarity.
-4. Filler Words: Identify words like "um", "uh", "like", "basically", "actually", "you know".
-5. Better Alternative: Rephrase into an articulate, professional, high-impact version.
-6. Strengths: 2 specific positive observations.
-7. Improvements: 2 actionable tips to level up.
+Evaluate thoroughly on:
+1. Verdict: "Kaisa introduction/response raha" (Brief, punchy 1-2 sentence summary of their performance).
+2. Exact Mistakes ("Kahan kya galti hui"): List every specific grammar, pronunciation, phrasing, or structural mistake with the original text, corrected version, and clear explanation of why it was wrong.
+3. Grammar & Syntax: Accuracy, tenses, subject-verb agreement.
+4. Vocabulary & Professional Diction: Polished phrasing, avoiding slang or overly casual words.
+5. Fluency & Tone: Confidence, persuasion, clarity.
+6. Filler Words: Identify words like "um", "uh", "like", "basically", "actually", "you know".
+7. Better Alternative: Rephrase into an articulate, professional, high-impact version.
+8. Strengths: 2 specific positive observations.
+9. Improvements: 2 actionable tips to level up.
 
 Return strictly valid JSON with this exact schema (no markdown, no backticks, no code fence):
 {
   "overallScore": 7.5,
+  "verdict": "Clear and polite, but lacked technical specifics and used informal greetings.",
   "grammarScore": 8.0,
   "vocabularyScore": 7.0,
   "fluencyScore": 7.5,
+  "mistakes": [
+    {
+      "original": "Myself Suraj and I belongs to...",
+      "correction": "My name is Suraj, and I belong to...",
+      "reason": "Using 'Myself' to introduce yourself is grammatically incorrect; use 'My name is' or 'I am'."
+    }
+  ],
   "fillerWords": [{"word": "like", "count": 2}],
   "betterAlternative": "string",
   "strengths": ["string", "string"],
@@ -117,9 +127,11 @@ Return strictly valid JSON with this exact schema (no markdown, no backticks, no
       console.error("Failed to parse communication AI response:", cleanJson);
       parsed = {
         overallScore: 7.0,
+        verdict: "Good practice attempt. Clear thought process with room for more polished business phrasing.",
         grammarScore: 7.5,
         vocabularyScore: 7.0,
         fluencyScore: 7.0,
+        mistakes: [],
         fillerWords: [],
         betterAlternative: userSpeech,
         strengths: ["Clear thought process", "Relevant to topic"],
@@ -139,9 +151,11 @@ Return strictly valid JSON with this exact schema (no markdown, no backticks, no
       category: category || "Professional",
       userSpeech: userSpeech.trim(),
       overallScore: Number((parsed.overallScore || 7).toFixed(1)),
+      verdict: parsed.verdict || "Assessment completed",
       grammarScore: Number((parsed.grammarScore || 7).toFixed(1)),
       vocabularyScore: Number((parsed.vocabularyScore || 7).toFixed(1)),
       fluencyScore: Number((parsed.fluencyScore || 7).toFixed(1)),
+      mistakes: parsed.mistakes || [],
       fillerWords: parsed.fillerWords || [],
       betterAlternative: parsed.betterAlternative || "",
       strengths: parsed.strengths || [],
