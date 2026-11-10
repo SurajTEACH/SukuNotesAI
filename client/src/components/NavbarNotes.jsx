@@ -3,6 +3,7 @@ import { AnimatePresence, motion as Motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { GraduationCap, LogOut, ChevronLeft, Plus, FileText, History, User } from "lucide-react"; 
 import { useNavigate } from "react-router-dom";
+import BackButton from "./BackButton.jsx";
 import { setUserData } from "../redux/userSlice.js";
 import axios from "axios";
 import { serverUrl } from "../App.jsx";
@@ -28,12 +29,7 @@ function NavbarNotes() {
             
             {/* Left Section: Back & Brand */}
             <div className="flex items-center gap-2 sm:gap-4">
-              <button
-                onClick={() => navigate(-1)}
-                className="grid h-9 w-9 sm:h-10 sm:w-10 place-items-center rounded-full bg-white/5 ring-1 ring-white/10 hover:bg-white/15 transition-all cursor-pointer shrink-0"
-              >
-                <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-              </button>
+              <BackButton label="Back" fallbackTo="/" />
 
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="grid h-9 w-9 sm:h-10 sm:w-10 place-items-center rounded-full bg-gradient-to-br from-pink-500 to-orange-400 shrink-0">

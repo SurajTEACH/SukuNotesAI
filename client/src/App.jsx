@@ -12,6 +12,7 @@ import Interview from "./pages/interview.jsx";
 import InterviewPage from "./pages/InterviewPage.jsx";
 import InterviewHistory from "./pages/InterviewHistory.jsx";
 import InterviewReport from "./pages/InterviewReport.jsx";
+import Communication from "./pages/Communication.jsx";
 
 export const serverUrl =
   window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
@@ -80,6 +81,11 @@ function App() {
         <Route
           path="/interview-report/:id"
           element={userData ? <InterviewReport /> : <Navigate to="/auth" replace />}
+        />
+
+        <Route
+          path="/communication"
+          element={userData ? <Communication /> : <Navigate to="/auth" replace />}
         />
 
       </Routes>

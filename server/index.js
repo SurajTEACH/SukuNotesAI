@@ -8,6 +8,7 @@ import userRouter from './routes/user.route.js';
 import notesRouter from './routes/generateNotes.route.js';
 import pdfNotesRouter from './routes/pdfNotes.route.js';
 import interviewRouter from './routes/interview.route.js';
+import communicationRouter from './routes/communication.route.js';
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -49,6 +50,7 @@ app.use("/api/user", userRouter);
 app.use("/api/notes", notesRouter);
 app.use("/api/notes-download", pdfNotesRouter);
 app.use("/api/interview", interviewRouter);
+app.use("/api/communication", communicationRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

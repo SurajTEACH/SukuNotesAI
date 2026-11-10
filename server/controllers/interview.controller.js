@@ -393,12 +393,16 @@ export const finishInterview = async (req, res) => {
         await interview.save();
 
         return res.status(200).json({
+            role: interview.role,
+            experience: interview.experience,
+            mode: interview.mode,
             finalScore: Number(finalScore.toFixed(1)),
             confidence: Number(avgConfidence.toFixed(1)),
             communication: Number(avgCommunication.toFixed(1)),
             correctness: Number(avgCorrectness.toFixed(1)),
             questionWiseScore: interview.questions.map((q)=>({
                 question: q.question,
+                answer: q.answer || "",
                 score: q.score || 0,
                 feedback: q.feedback || "",
                 confidence: q.confidence || 0,
@@ -469,7 +473,12 @@ export const getInterviewReport = async (req, res) => {
            : 0;
 
            return res.status(200).json({
-               finalScore: Number(interview.finalScore.toFixed(1)),
+               role: interview.role,
+               experience: interview.experience,
+               mode: interview.mode,
+               status: interview.status,
+               createdAt: interview.createdAt,
+               finalScore: Number((interview.finalScore || 0).toFixed(1)),
                confidence: Number(avgConfidence.toFixed(1)),
                communication: Number(avgCommunication.toFixed(1)),
                correctness: Number(avgCorrectness.toFixed(1)),

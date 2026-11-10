@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GraduationCap, User, LogOut, ChevronLeft, Plus} from "lucide-react"; 
 import { Sparkle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import BackButton from "./BackButton.jsx";
 import {  setUserData } from "../redux/userSlice.js";
 import axios from "axios";
 import { serverUrl } from "../App";
@@ -28,12 +29,7 @@ function Navbar() {
           <div className="flex items-center justify-between px-5 py-4 sm:px-7 sm:py-5">
             {/* Brand */}
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => navigate(-1)}
-                className="grid h-10 w-10 place-items-center rounded-full bg-white/5 ring-1 ring-white/10 hover:bg-white/15 transition-all cursor-pointer"
-              >
-                <ChevronLeft className="h-5 w-5 text-white" />
-              </button>
+              <BackButton label="Back" fallbackTo="/" />
 
               <div className="flex items-center gap-3">
                 <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-pink-500 to-orange-400">

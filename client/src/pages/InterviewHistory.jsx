@@ -425,7 +425,7 @@ function InterviewHistory() {
 
             ) : interviews.length === 0 ? (
               // Empty State
-              <EmptyState onStart={() => navigate("/interview")} />
+              <EmptyState onStart={() => navigate("/mock-interview")} />
 
             ) : filtered.length === 0 ? (
               // No search/filter results

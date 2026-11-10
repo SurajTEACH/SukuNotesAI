@@ -399,10 +399,14 @@ function InterviewStep2SetUp({ interviewData, onFinish }) {
     isMicOnRef.current = false;
 
     try {
+      const token = localStorage.getItem("token");
       const result = await axios.post(
         serverUrl + "/api/interview/finish",
         { interviewId },
-        { withCredentials: true }
+        {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+          withCredentials: true,
+        }
       );
       onFinish?.(result?.data);
     } catch (error) {
