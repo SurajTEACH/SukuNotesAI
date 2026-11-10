@@ -57,3 +57,4 @@ const communicationSchema = new mongoose.Schema(
 
 const Communication = mongoose.model("Communication", communicationSchema);
 export default Communication;
+

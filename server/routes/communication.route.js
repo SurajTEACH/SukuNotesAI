@@ -13,3 +13,4 @@ communicationRouter.post("/evaluate", isAuth, evaluateSpeech);
 communicationRouter.get("/history", isAuth, getHistory);
 
 export default communicationRouter;
+
