@@ -4,8 +4,11 @@ import { setUserData } from "../redux/userSlice.js";
 
 export const getCurrentUser = async (dispatch) => {
     try {
-       const result = await  axios.get(serverUrl + "/api/user/currentuser",{withCredentials:true});
-      
+       const token = localStorage.getItem("token");
+       const result = await axios.get(serverUrl + "/api/user/currentuser", {
+           headers: token ? { Authorization: `Bearer ${token}` } : {},
+           withCredentials: true
+       });
       
        dispatch(setUserData(result.data));
 
@@ -28,7 +31,11 @@ export const logoutUser = async () => {
 
 export const  generateNotes = async (payload) =>{
     try {
-      const  result = await axios.post(serverUrl + "/api/notes/generate-notes", payload, {withCredentials:true});
+      const token = localStorage.getItem("token");
+      const result = await axios.post(serverUrl + "/api/notes/generate-notes", payload, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        withCredentials: true
+      });
       return result.data
 
     } catch (error) {
@@ -38,7 +45,9 @@ export const  generateNotes = async (payload) =>{
 
 export const downloadNotesPdf = async (result) => {
     try {
+        const token = localStorage.getItem("token");
         const response = await axios.post(serverUrl + "/api/notes-download/generate-notes-pdf", {result}, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
             responseType: 'blob',
             withCredentials: true
         });

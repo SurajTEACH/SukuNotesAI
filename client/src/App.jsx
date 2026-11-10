@@ -16,7 +16,7 @@ import InterviewReport from "./pages/InterviewReport.jsx";
 export const serverUrl =
   window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
     ? "http://localhost:8000"
-    : "https://sukunotesai-1.onrender.com";
+    : "https://sukunotesai.onrender.com";
 
 function App() {
   const dispatch = useDispatch();
