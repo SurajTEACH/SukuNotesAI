@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion as Motion } from "motion/react";
 import { FcGoogle } from "react-icons/fc";
 import {  Sparkles} from "lucide-react";
-import { signInWithRedirect, getRedirectResult } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/firebase.js";
 import axios from "axios";
 import { serverUrl } from "../App.jsx";
@@ -16,47 +16,32 @@ function Auth() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  // Redirect se wapas aane par result handle karo
-  useEffect(() => {
-    const handleRedirectResult = async () => {
-      try {
-        const response = await getRedirectResult(auth);
-        if (response) {
-          setLoading(true);
-          const User = response.user;
-          const name = User.displayName;
-          const email = User.email;
-
-          const result = await axios.post(
-            serverUrl + "/api/auth/google",
-            { name, email },
-            { withCredentials: true },
-          );
-
-          if (result.data?.token) {
-            localStorage.setItem("token", result.data.token);
-          }
-
-          dispatch(setUserData(result.data));
-          navigate("/");
-        }
-      } catch (error) {
-        console.log("Redirect result error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    handleRedirectResult();
-  }, []);
-
   const handleGoogleAuth = async () => {
     try {
       setLoading(true);
-      await signInWithRedirect(auth, provider);
-      // Page redirect hoga, baad mein useEffect handle karega
+      const response = await signInWithPopup(auth, provider);
+      if (response && response.user) {
+        const User = response.user;
+        const name = User.displayName;
+        const email = User.email;
+
+        const result = await axios.post(
+          serverUrl + "/api/auth/google",
+          { name, email },
+          { withCredentials: true },
+        );
+
+        if (result.data?.token) {
+          localStorage.setItem("token", result.data.token);
+        }
+
+        dispatch(setUserData(result.data));
+        navigate("/");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Google Auth error:", error);
+      alert(error.message || "Google Sign-in failed. Please try again.");
+    } finally {
       setLoading(false);
     }
   };
@@ -146,7 +131,7 @@ function Auth() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                 </svg>
-                Redirecting...
+                Signing in...
               </>
             ) : (
               <>
